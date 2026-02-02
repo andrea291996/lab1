@@ -10,19 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 final class TrainTest extends TestCase
 {
-    //public function testArgomentoAddWagon(){
-       //da ripensare
-       //meglio type hinting?
-    //}
 
-    public function testRitornoAddWagon(){
+    public function testRitornoAddWagonRitorno(){
         $treno = new Train();
         $vagone = new Wagon(10);
         $controllo = $treno->add_wagon($vagone);
         $this->assertSame(null, $controllo);
     }
 
-    public function testPassengersCount(){
+    public function testPassengersCountRitorno(){
         $treno = new Train();
         $vagone1 = new Wagon(10);
         $vagone2 = new Wagon(5);
@@ -47,7 +43,7 @@ final class TrainTest extends TestCase
         $this->assertSame(15, $controllo);
     }
 
-    public function testAddPassengers1(){
+    public function testAddPassengersRitorno1(){
         $treno = new Train();
         $vagone1 = new Wagon(10);
         $vagone2 = new Wagon(5);
@@ -60,7 +56,7 @@ final class TrainTest extends TestCase
         $this->assertSame(2, $controllo2);
     }
 
-    public function testAddPassengers2(){
+    public function testAddPassengersRitorno2(){
         $treno = new Train();
         $vagone1 = new Wagon(10);
         $vagone2 = new Wagon(5);
@@ -73,7 +69,7 @@ final class TrainTest extends TestCase
         $this->assertSame(2, $controllo2);
     }
 
-    public function testAddPassengers3(){
+    public function testAddPassengersRitorno3(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $vagone2 = new Wagon(5);
@@ -136,7 +132,7 @@ final class TrainTest extends TestCase
         $treno->get_wagons_of_class("pincopallino");
     }
 
-    public function testGetWagonsOfClass(){
+    public function testGetWagonsOfClassRitorno(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $vagone2 = new Wagon(5);
@@ -149,7 +145,7 @@ final class TrainTest extends TestCase
         $this->assertSame([$vagone1, $vagone3], $controllo);
     }
 
-    public function testPassengersDistribution(){
+    public function testPassengersDistributionRitorno(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $vagone2 = new Wagon(5);
@@ -223,7 +219,7 @@ final class TrainTest extends TestCase
         $this->assertSame(1, $controllo);
     }
 
-    public function testSeatsAvailable1(){
+    public function testSeatsAvailableRitorno1(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $vagone2 = new Wagon(5);
@@ -241,7 +237,7 @@ final class TrainTest extends TestCase
         $this->assertSame(109, $controllo);
     }
 
-    public function testSeatsAvailable2(){
+    public function testSeatsAvailableRitorno2(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $treno->add_wagon($vagone1);
@@ -252,12 +248,12 @@ final class TrainTest extends TestCase
         $this->assertSame(8, $controllo);
     }
 
-    public function testSeatsAvailable3(){
+    public function testSeatsAvailableRitorno3(){
         $treno = new Train();
         $vagone1 = new Wagon(10, "prima");
         $treno->add_wagon($vagone1);
         $treno->add_passengers(11, "prima");
-        
+
         $controllo = $treno->seats_available();
         $this->assertSame(0, $controllo);
     }
