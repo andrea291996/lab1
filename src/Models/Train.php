@@ -3,22 +3,21 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use InvalidArgumentException;
+
 class Train {
     private int $passengers;
     private int $seats;
     private array $wagons = [];
 
-
-    // $vagone è un oggetto di classe Wagon (infatti in alto l'abbiamo richiamata)
+    //chiedi se è meglio il Type Hinting oppure no
     public function add_wagon(Wagon $vagone): void{
-
-         // ogni nuovo oggetto verrà aggiunto all'array della proprietà wagon che abbiamo dichiarato all'inizio, che fa parte di questa istanza ($this->)
+        if(!$vagone instanceof Wagon){
+            throw new InvalidArgumentException("L'argomento di add_wagon deve essere un oggetto di tipo Wagon!");
+        }
         $this->wagons[] = $vagone;
-        // da adesso dentro la mia classe wagons[] ci saranno tutti i metodi della classe Wagon
     }
 
-
-    // questo dà 0
     public function passengers_count(): int{   
         $vagoni = $this->wagons;
         $totale = 0;
@@ -30,7 +29,6 @@ class Train {
         return $totale;
     }
 
-    // questo dà 120, ovvero il numero totale di posti
     public function seats_count(): int
     {
         $vagoni = $this->wagons;
@@ -43,11 +41,17 @@ class Train {
         return $totalePosti;
     }
 
-     // questo restituisce il numero di passeggeri che avanzano, in questo caso 0. I paggeggeri vengono alloggiati nel primo vagone fino ad esaurirlo, poi nel secondo fino ad esaurirlo e così via
-    public function add_passengers(int $num, string $classe = "seconda"): int 
+    public function add_passengers($num, string $classe = "seconda"): int 
     {
-
-    //Ticket1: voglio che mi crei una variabile all’interno di foreach che sia uguale alla classe del vagone che in quel momento é rappresentato dalla variabile $vagone. Ergo: voglio sapere di che classe é $vagone. (Nel foreach $vagone é al primo giro il vagone 1, al secondo giro il vagone 2 e cosi via).
+        if($num < 0){
+            throw new InvalidArgumentException("Non puoi inserire un numero negativo!");
+        }
+        if(!is_numeric($num)){
+            throw new InvalidArgumentException("Devi inserire un numero come primo argomento!");
+        }
+        if($classe !== "seconda" && $classe !== "prima"){
+            throw new InvalidArgumentException("Se inserisci il secondo argomento, questo deve essere la stringa -prima- o -seconda-!");
+        }
         $vagoni = $this->get_wagons_of_class($classe);
         if(count($vagoni) == 0)
             return $num;
@@ -60,10 +64,12 @@ class Train {
             }
         }
         return $esclusi;
-        
     }
         
     public function get_wagons_of_class(string $classe): array{
+        if($classe !== "seconda" && $classe !== "prima"){
+            throw new InvalidArgumentException("Devi inserire la stringa -prima- o -seconda-!");
+        }
         $vagoni = $this->wagons;
         $risultato = [];
         foreach($vagoni as $vagone){
@@ -74,7 +80,6 @@ class Train {
         return $risultato;
     }
 
-    // questo restituisce una lista con la distribuzione dei passeggeri nei vagono, in questo caso [10, 0, 0]
     public function passengers_distribution(): array
     {
         $vagoni = $this->wagons;
@@ -86,9 +91,14 @@ class Train {
         return $distribuzione;
     }
 
-    // i passeggeri vengono rimossi dall'ultimo vagone fino a svuotarlo, poi si passa al penultimo e così via
-    public function remove_passengers($num): void 
+    public function remove_passengers($num): int 
     {
+        if($num < 0){
+            throw new InvalidArgumentException("Non puoi inserire un numero negativo!");
+        }
+        if(!is_numeric($num)){
+            throw new InvalidArgumentException("Devi inserire un numero come argomento!");
+        }
         $vagoni = $this->wagons;
         $invertiti = array_reverse($vagoni);
         $nonRimossi = 0;
@@ -96,9 +106,10 @@ class Train {
             $nonRimossi = $vagone->remove_passengers($num);
             $num = $nonRimossi;
             if($nonRimossi == 0){
-                return;
+                return 0;
             }
         }
+        return $nonRimossi;
     }
 
     public function seats_available(): int{

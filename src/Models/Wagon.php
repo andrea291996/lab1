@@ -8,19 +8,16 @@ use InvalidArgumentException;
 
 class Wagon{
 
-    // proprietà della classe, che diventeranno dell'oggetto
     private int $totalePosti;
     private int $totalePasseggeri = 0;
     private int $postiDisponibili;
     private string $classe;
 
-    // il costruttore serve a creare l'oggetto
-    public function __construct($totalePosti, $classe = "seconda") 
+    public function __construct(int $totalePosti, $classe = "seconda") 
     {
         if($totalePosti < 0){
             throw new InvalidArgumentException("Non puoi inserire un numero negativo!");
         }
-        //costruttore viene chiamato tutte le volte che fo new Nomeclasse
         $this->totalePosti = $totalePosti;
         $this->postiDisponibili = $totalePosti;
         $this->classe = $classe;
@@ -35,9 +32,12 @@ class Wagon{
         return $this->totalePosti;
     }
 
-    public function add_passengers(int $number): int{
+    public function add_passengers($number): int{
         if($number < 0){
             throw new InvalidArgumentException("Non puoi inserire un numero negativo!");
+        }
+        if(!is_numeric($number)){
+            throw new InvalidArgumentException("Devi inserire un numero come argomento!");
         }
         $differenza = $this->postiDisponibili - $number;
         if($differenza >= 0){
@@ -52,9 +52,12 @@ class Wagon{
         }
     }
 
-    public function remove_passengers(int $number): int{
+    public function remove_passengers($number): int{
         if($number < 0){
             throw new InvalidArgumentException("Non puoi inserire un numero negativo!");
+        }
+        if(!is_numeric($number)){
+            throw new InvalidArgumentException("Devi inserire un numero come argomento!");
         }
         $differenza = $this->totalePasseggeri - $number;
         if($differenza >= 0){

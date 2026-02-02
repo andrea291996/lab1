@@ -1,7 +1,11 @@
 <?php
 
+require_once __DIR__ . '/Models/Wagon.php'; 
+require_once __DIR__ . '/Models/Train.php';
+
 use App\Models\Wagon;
 use App\Models\Train;
+
 try{
 $wagon1 = new Wagon("ciao");
 }catch(\Exception $e){

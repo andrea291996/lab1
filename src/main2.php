@@ -1,27 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
+require_once __DIR__ . '/Models/Wagon.php'; 
+require_once __DIR__ . '/Models/Train.php';
 
 use App\Models\Wagon;
 use App\Models\Train;
 
+class errore{};
+
+try{
 $wagon1 = new Wagon(40);
 $wagon2 = new Wagon(40, "prima");
 $wagon3 = new Wagon(40);
+$treno = new Train();
+$treno->add_wagon($wagon1);
+$treno->add_wagon($wagon2);
+$treno->add_wagon($wagon3);
+$treno->add_passengers("10");
+$treno->remove_passengers("ciao");
+var_dump($treno->passengers_distribution());
+}
+catch(\Throwable $t){
+    echo $t->getMessage();
+}
 
-$train = new Train();
-$train->add_wagon($wagon1);
-$train->add_wagon($wagon2);
-$train->add_wagon($wagon3);
-$res = $train->get_wagons_of_class("prima");
-echo $train->add_passengers(50, "prima"); //restituisce 0
-
-$train->add_passengers(50, "prima"); //restituisce 0
-
-var_dump($train->passengers_distribution()); //[40,0,10];
-
-echo "\n ciao \n";
-echo $train->report($wagon1);
-
-/*
- * Gestire le eccezioni con throw
- */
